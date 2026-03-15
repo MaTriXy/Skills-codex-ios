@@ -6,7 +6,7 @@ Use this file to find component and cross-cutting guidance. Each entry lists whe
 
 - TabView: `references/tabview.md` — Use when building a tab-based app or any tabbed feature set.
 - NavigationStack: `references/navigationstack.md` — Use when you need push navigation and programmatic routing, especially per-tab history.
-- Sheets and modal routing: `references/sheets.md` — Use when you want centralized, enum-driven sheet presentation.
+- Sheets and presentation: `references/sheets.md` — Use for local item-driven sheets, centralized modal routing, and sheet-specific action patterns.
 - Form and Settings: `references/form.md` — Use for settings, grouped inputs, and structured data entry.
 - macOS Settings: `references/macos-settings.md` — Use when building a macOS Settings window with SwiftUI's Settings scene.
 - Split views and columns: `references/split-views.md` — Use for iPad/macOS multi-column layouts or custom secondary columns.
