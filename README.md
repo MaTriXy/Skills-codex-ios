@@ -2,169 +2,36 @@
 
 # Skills Public
 
-A collection of specialized skills for iOS and Swift development workflows.
+A collection of reusable development skills for Apple platforms, GitHub workflows, React performance work, and skill curation.
 
 ## Overview
 
-This repository contains a set of focused skills designed to assist with common iOS development tasks, from generating release notes to debugging apps and maintaining code quality.
+This repository contains focused, self-contained skills that help with recurring engineering tasks such as generating App Store release notes, debugging iOS apps, improving SwiftUI and React code, packaging macOS apps, and auditing what new skills a project actually needs.
 
-Install: place these skill folders under `$CODEX_HOME/skills/public` (or symlink this repo there).
+Install: place these skill folders under `$CODEX_HOME/skills`
 
-Optional: enable the pre-commit hook to keep `docs/skills.json` in sync:
-`git config core.hooksPath scripts/git-hooks`
 
 ## Skills
 
-### 📝 App Store Changelog
+This repo currently includes 11 skills:
 
-**Purpose**: Generate user-facing App Store release notes from git history.
-
-Automatically collects commits and changes since the last git tag (or a specified ref) and transforms them into clear, benefit-focused release notes suitable for the App Store. Filters out internal-only changes and groups user-visible improvements by theme.
-
-**Key Features**:
-- Collects commits and touched files since the last tag
-- Identifies user-visible changes vs internal work
-- Generates concise, benefit-focused bullet points
-- Validates changes map back to actual commits
-
-**Use When**: You need to create App Store "What's New" text or release notes based on git history.
-
----
-
-### 🐛 iOS Debugger Agent
-
-**Purpose**: Build, run, and debug iOS projects on simulators using XcodeBuildMCP.
-
-Provides a comprehensive workflow for building iOS apps, launching them on simulators, interacting with the UI, and capturing logs. Handles simulator discovery, session setup, and runtime debugging.
-
-**Key Features**:
-- Discovers and manages booted simulators
-- Builds and runs apps on simulators
-- Interacts with UI (tap, type, swipe, gestures)
-- Captures and analyzes app logs
-- Screenshots and UI inspection
-
-**Use When**: You need to run an iOS app, interact with the simulator UI, inspect on-screen state, or diagnose runtime behavior.
-
----
-
-### 🧭 GH Issue Fix Flow
-
-**Purpose**: Resolve GitHub issues end-to-end using `gh`, local edits, builds/tests, and git push.
-
-Provides a structured flow for reading issues, implementing fixes, validating with XcodeBuildMCP, and shipping changes with a closing commit.
-
-**Key Features**:
-- Fetches full issue context with `gh issue view`
-- Guides code discovery and focused edits
-- Runs targeted builds/tests via XcodeBuildMCP
-- Commits with closing message and pushes
-
-**Use When**: You need to take an issue number, inspect it with `gh`, implement a fix, run tests, and push.
-
----
-
-### ⚡ Swift Concurrency Expert
-
-**Purpose**: Review and fix Swift Concurrency issues for Swift 6.2+ codebases.
-
-Applies actor isolation, Sendable safety, and modern concurrency patterns to resolve compiler errors and improve concurrency compliance. Focuses on minimal behavior changes while ensuring data-race safety.
-
-**Key Features**:
-- Identifies actor context and isolation issues
-- Applies safe fixes preserving existing behavior
-- Handles UI-bound types, protocols, and background work
-- Ensures Sendable compliance
-
-**Use When**: You need to review Swift Concurrency usage, improve concurrency compliance, or fix Swift concurrency compiler errors.
-
----
-
-### 💎 SwiftUI Liquid Glass
-
-**Purpose**: Implement and review SwiftUI features using iOS 26+ Liquid Glass API.
-
-Helps adopt the native Liquid Glass API in SwiftUI interfaces, ensuring correct usage, performance, and design alignment. Supports both new implementations and refactoring existing features.
-
-**Key Features**:
-- Uses native `glassEffect` and `GlassEffectContainer` APIs
-- Ensures proper modifier ordering and composition
-- Handles iOS 26+ availability with fallbacks
-- Implements interactive glass for tappable elements
-- Supports morphing transitions
-
-**Use When**: You need to adopt Liquid Glass in new SwiftUI UI, refactor existing features to Liquid Glass, or review Liquid Glass usage for correctness.
-
----
-
-### 🧩 SwiftUI UI Patterns
-
-**Purpose**: Best practices and example-driven guidance for building SwiftUI views and components.
-
-Provides a structured approach to view composition, state ownership, and component selection, with references to common patterns and scaffolding guidance.
-
-**Key Features**:
-- Component references for TabView, NavigationStack, Sheets, and more
-- Scaffolding guidance for new app wiring
-- Emphasis on SwiftUI-native state and composition
-- Guidance for consistent, maintainable view structure
-
-**Use When**: You need help designing SwiftUI UI, composing screens, or selecting component patterns.
-
----
-
-### 🔧 SwiftUI View Refactor
-
-**Purpose**: Refactor SwiftUI view files for consistent structure and dependency patterns.
-
-Applies standardized ordering, Model-View (MV) patterns, and correct Observation usage to SwiftUI views. Focuses on making views lightweight, composable, and maintainable.
-
-**Key Features**:
-- Enforces consistent view ordering (Environment → State → init → body → helpers)
-- Promotes MV patterns over view models when possible
-- Handles view models safely (non-optional when possible)
-- Ensures correct `@Observable` and `@State` usage
-- Supports dependency injection via `@Environment`
-
-**Use When**: You need to clean up a SwiftUI view's structure, handle view models safely, or standardize dependency injection and Observation usage.
-
----
-
-### 🚀 SwiftUI Performance Audit
-
-**Purpose**: Audit and improve SwiftUI runtime performance from code review and architecture.
-
-Focuses on identifying common SwiftUI performance pitfalls in view code and data flow, recommending targeted refactors, and guiding user-run Instruments profiling when code review is not enough.
-
-**Key Features**:
-- Code-first review for slow rendering, janky scrolling, and excessive updates
-- Targets common SwiftUI pitfalls (unstable identity, heavy `body`, layout thrash)
-- Provides remediation guidance and refactor suggestions
-- Offers a user-run Instruments workflow when needed
-
-**Use When**: You need to diagnose SwiftUI performance issues, improve view/update efficiency, or get guidance on profiling with Instruments.
-
----
-
-### 🧰 macOS SwiftPM App Packaging (No Xcode)
-
-**Purpose**: Scaffold, build, and package SwiftPM-based macOS apps without an Xcode project.
-
-Bootstraps a minimal SwiftPM macOS app folder, then uses shell scripts to build, assemble the .app bundle, sign, and optionally notarize or generate Sparkle appcasts.
-
-**Key Features**:
-- Bootstrap template for a SwiftPM macOS app layout
-- Packaging script to assemble a .app bundle without Xcode
-- Dev loop script to package and launch the app
-- Optional release signing/notarization and appcast tooling
-
-**Use When**: You need a from-scratch macOS app layout and packaging flow without Xcode.
-
----
+| Skill | Folder | Description |
+| --- | --- | --- |
+| App Store Changelog | `app-store-changelog` | Creates user-facing App Store release notes from git history by collecting changes since the last tag, filtering for user-visible work, and rewriting it into concise "What's New" bullets. |
+| GitHub | `github` | Uses the `gh` CLI to inspect and operate on GitHub issues, pull requests, workflow runs, and API data, including CI checks, run logs, and advanced queries. |
+| iOS Debugger Agent | `ios-debugger-agent` | Uses XcodeBuildMCP to build, launch, and debug the current iOS app on a booted simulator, including UI inspection, interaction, screenshots, and log capture. |
+| macOS SwiftPM App Packaging (No Xcode) | `macos-spm-app-packaging` | Scaffolds, builds, packages, signs, and optionally notarizes SwiftPM-based macOS apps without requiring an Xcode project. |
+| Project Skill Audit | `project-skill-audit` | Analyzes a project's past Codex sessions, memory, existing local skills, and conventions to recommend the highest-value new skills or updates to existing ones. |
+| React Component Performance | `react-component-performance` | Diagnoses slow React components by finding re-render churn, expensive render work, unstable props, and list bottlenecks, then suggests targeted optimizations and validation steps. |
+| Swift Concurrency Expert | `swift-concurrency-expert` | Reviews and fixes Swift 6.2+ concurrency issues such as actor isolation problems, `Sendable` violations, main-actor annotations, and data-race diagnostics. |
+| SwiftUI Liquid Glass | `swiftui-liquid-glass` | Implements, reviews, or refactors SwiftUI features to use the iOS 26+ Liquid Glass APIs correctly, with proper modifier ordering, grouping, interactivity, and fallbacks. |
+| SwiftUI Performance Audit | `swiftui-performance-audit` | Audits SwiftUI runtime performance from code and architecture, focusing on invalidation storms, identity churn, layout thrash, heavy render work, and profiling guidance. |
+| SwiftUI UI Patterns | `swiftui-ui-patterns` | Provides best practices and example-driven guidance for building SwiftUI screens and components, including navigation, sheets, app wiring, async state, and reusable UI patterns. |
+| SwiftUI View Refactor | `swiftui-view-refactor` | Refactors SwiftUI view files toward smaller subviews, MV-style data flow, stable view trees, explicit dependency injection, and correct Observation usage. |
 
 ## Usage
 
-Each skill is self-contained with its own documentation. Refer to the `SKILL.md` file in each skill's directory for detailed workflows, guidelines, and examples.
+Each skill is self-contained. Refer to the `SKILL.md` file in each skill directory for triggers, workflow guidance, examples, and supporting references.
 
 ## Contributing
 
