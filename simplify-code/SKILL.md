@@ -5,7 +5,7 @@ description: "Review a git diff or explicit file scope for reuse, code quality, 
 
 # Simplify Code
 
-Review changed code for reuse, quality, efficiency, and clarity issues. Use Codex sub-agents to review in parallel, then optionally apply only high-confidence, behavior-preserving fixes.
+Review changed code for reuse, quality, efficiency, and clarity issues. Use Codex sub-agents to review in parallel, but keep those sub-agents read-only: they should only inspect code and send findings back to the main agent. Only the main agent may apply high-confidence, behavior-preserving fixes.
 
 ## Modes
 
@@ -48,7 +48,7 @@ Before reviewing standards or applying fixes, read the repo's local instruction 
 
 Use those instructions to distinguish real issues from intentional local patterns.
 
-## Step 2: Launch Four Review Sub-Agents in Parallel
+## Step 2: Launch Four Read-Only Review Sub-Agents in Parallel
 
 Use Codex sub-agents when the scope is large enough for parallel review to help. For a tiny diff or one very small file, it is acceptable to review locally instead.
 
@@ -56,8 +56,11 @@ When spawning sub-agents:
 
 - give each sub-agent the same scope
 - tell each sub-agent to inspect only its assigned review role
+- tell each sub-agent it is operating in a read-only review pass
+- do not let sub-agents edit files, run `apply_patch`, stage changes, commit, or perform other state-mutating actions
 - ask for concise, structured findings only
 - ask each sub-agent to report file, line or symbol, problem, recommended fix, and confidence
+- ask each sub-agent to return findings to the main agent only; they must not implement fixes themselves
 
 Use four review roles.
 
@@ -68,6 +71,8 @@ Review the changes for reuse opportunities:
 1. Search for existing helpers, utilities, or shared abstractions that already solve the same problem.
 2. Flag duplicated functions or near-duplicate logic introduced in the change.
 3. Flag inline logic that should call an existing helper instead of re-implementing it.
+
+This sub-agent is read-only. It must not edit files, apply patches, or make any other workspace changes.
 
 Recommended sub-agent role: `explorer` for broad codebase lookup, or `reviewer` if a stronger review pass is more useful than wide search.
 
@@ -80,6 +85,8 @@ Review the same changes for code quality issues:
 3. Copy-paste with slight variation that should become a shared abstraction
 4. Leaky abstractions or ownership violations across module boundaries
 5. Stringly-typed values where existing typed contracts, enums, or constants already exist
+
+This sub-agent is read-only. It must not edit files, apply patches, or make any other workspace changes.
 
 Recommended sub-agent role: `reviewer`
 
@@ -94,6 +101,8 @@ Review the same changes for efficiency issues:
 5. Memory growth, missing cleanup, or listener/subscription leaks
 6. Overly broad reads or scans when the code only needs a subset
 
+This sub-agent is read-only. It must not edit files, apply patches, or make any other workspace changes.
+
 Recommended sub-agent role: `reviewer`
 
 ### Sub-Agent 4: Clarity and Standards Review
@@ -106,6 +115,8 @@ Review the same changes for clarity, local standards, and balance:
 4. Over-simplification that collapses separate concerns into one unclear unit
 5. Dead code, dead abstractions, or indirection without value
 
+This sub-agent is read-only. It must not edit files, apply patches, or make any other workspace changes.
+
 Recommended sub-agent role: `reviewer`
 
 Only report issues that materially improve maintainability, correctness, or cost. Do not churn code just to make it look different.
@@ -113,6 +124,8 @@ Only report issues that materially improve maintainability, correctness, or cost
 ## Step 3: Aggregate Findings
 
 Wait for all review sub-agents to complete, then merge their findings.
+
+The main agent owns this step. Treat sub-agent output as review input only, not as permission to delegate code changes back out.
 
 Normalize findings into this shape:
 
@@ -130,6 +143,7 @@ In `review-only` mode, stop after reporting findings.
 
 In `safe-fixes` or `fix-and-validate` mode:
 
+- Only the main agent applies fixes for this skill
 - Apply only high-confidence, behavior-preserving fixes
 - Skip subjective refactors that need product or architectural judgment
 - Preserve local patterns when they are intentional or instruction-backed
@@ -147,7 +161,7 @@ Do not stage, commit, or push changes as part of this skill.
 
 ## Step 5: Validate When Required
 
-In `fix-and-validate` mode, run the smallest relevant validation for the touched scope after edits.
+In `fix-and-validate` mode, after the main agent finishes edits, run the smallest relevant validation for the touched scope.
 
 Examples:
 
